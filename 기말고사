@@ -3,5 +3,39 @@
   1. 순환 뉴런과 순환층
       순환 신경망은 피드포워드 신경망과 매우 비슷하지만 뒤족으로 순환하는 연결도 O - 다른 점
         ex) 입력을 받아 출력을 만들고 자신에게도 출려긍ㄹ 보내는 뉴런 하나로 구성된 가장 간단한 RNN
-      각 타임 스텝(time step t) 또는 
+      각 타임 스텝(time step t) 또는 프레임(frame) 마다 이 순환 뉴런 recurrent neuron은 x(t)와 
+      이전 타임 스텝의 출력인 y(t-1)을 입력으로 받음. 
 
+    첫 번째 타임 스텝에서는 이전 출력이 없으므로 일반적으로는 0으로 설정
+    이 작은 네트워크를 시간을 축으로 하여 표현할 수 O , 이를 시간에 따라 네트워크를 펼쳤다고 표현함.
+    (unrolling the network through time)
+
+    순환 뉴런으로 이루어진 층은 쉽게 만들 수 있음
+      타입 스텝 t마다 모든 뉴런은 입력 벡터 x(t)와 이전 타임 스텝의 출력 벡터 y(t-1)을 받음.
+      입력과 출려기 모두 벡터가 됨. ( 뉴런이 하나일 때는 출력이 스칼라 ) 
+
+    메모리 셀 (memory cell 혹은 간단히 셀)
+      타임 스텝에 걸쳐서 어떤 상태를 보존하는 신경망의 구성 요소 
+
+    입력과 출력 시퀀스
+      - 시퀀스 투 시퀀스 네트워크 (sequence to sequence network)
+      - 시퀀스 투 벡터 네트워크 (sequence to vector network)
+      - 벡터 투 시퀀스 네트워크 (vector to sequence network)
+      -  인코더 디코더
+
+2. RNN 훈련
+    BPTT(backpropagation through time) 전략
+      RNN 훈련 기법 - 타임 스텝으로 네트워크를 펼치고(이전에 했던 것처럼) 보통의 역전파를 사용
+
+3. 시계열 예측
+    내일 버스와 열차에 탑승할 승객 수를 예측하는 모델
+      - 데이터 로드 > 정제 ( 2001년부터의 일일 승객 데이터 )
+
+      import pandas as pd
+      from pathlib import Path
+
+      path = Path ("datasets/rideship/CTA_Rideship_Daily_Boarding_Totals.csv")
+      df = pd.read_csv 
+
+tlqkf 
+    
