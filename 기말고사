@@ -35,7 +35,51 @@
       from pathlib import Path
 
       path = Path ("datasets/rideship/CTA_Rideship_Daily_Boarding_Totals.csv")
-      df = pd.read_csv 
+      df = pd.read_csv(path, parse_dates=["service_date"])
+      df.columns = ["date","day_type","bus","rail",""total"] #짧은 이름
+      df = df.sort_values("date").set_index("date")
+      df = df.drop("total", axis = 1) # total은 단순히 bus+rail이므로 필요 X
+      df = df.drop_duplicates()       # 중복 월 삭제 (2011-10rhk 2014-07)
 
-tlqkf 
+      - csv 파일을 로드 > 열 이름을 짧게 줄이고, 날짜순으로 행 정렬 > total 열과 중복 행을 삭제 
+        처음 몇 행만 확인
+        일별 버스와 철도 이용 승객 수 
+        W - 평일, A - 토요일, U - 공휴일
+
+      >>>> df.head()
+                  day_type      bus    rail
+      date
+      2001-01-01      U         297192  126455
+      2001-01-02      W         780827  501952
+      2001-01-03      W         824923  536432
+      2001-01-04      W         870021  550011
+      2001-01-05      w         890426  557917
+
+      2019년 몇 달 동안의 버스와 열차 승객 수 그래프 그리기
+        - 다변량 시계열
+        - 단변량 시계열
+        - 주간 계절성
+        - 단순 예측
+
+        단순 예측 결과를 시각화하기 위해 (버스와 열차에 대한) 시계열과 함께 일주일 지연된(오른쪽으로 이동된) 
+        시계열을 점선으로 그리기
+          -> 차분 - 두 시계열의 차이(시간 t의 값에서 시간 t-7의 값을 뺀 것)
+
+        - 자기상관 시계열
+          시계열 시간이 지연된 자기자신과 상관관계를 가질 때
+        - 5월 말을 제외하고는 대부분 차이가 매우 작음. >>이때 공휴일 o/x
+
+        실제로 당시 월요일이 메모리얼 데이였기 때문에 주말이 길었으며, 이 열을 사용해 예측을 개선할 수 있지만 
+        지금은 그냥 임의로 선택한 2019년 3-5월 3달 동안의 평균 절댓값 오차를 계산
+          >> 단순 예측의 MAE는 버스의 경우에서 약 43916명, 열차의 경우 약 42143명
+
+        - 평균 절대 비율 오차
+          예측 오차를 타깃값으로 나누기
+
+        - 연간 계절성
+          장기간 트렌드를 시각화 - 각 기계열의 12개월 이동 평균 그래프 그리기
+
+        * 12개월 차분 확인
+          df_monthly.diff(12)[period].plot(grid=True,maker=".", figsize(8,3))
+          plt.show()
     
