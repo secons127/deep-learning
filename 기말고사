@@ -82,4 +82,8 @@
         * 12개월 차분 확인
           df_monthly.diff(12)[period].plot(grid=True,maker=".", figsize(8,3))
           plt.show()
+
+        - ARMA 모델
+          AR (자기회귀) 
+            
     
